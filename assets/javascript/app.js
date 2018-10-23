@@ -16,22 +16,11 @@ var beginGame = false;
 // defining questions as objects
 var q1 = {
     question: "here's the first question",
-    ans1: {
-        answer: "answer 1",
-        value: true,
-    },
-    ans2: {
-        answer: "answer 2",
-        value: false,
-    },
-    ans3: {
-        answer: "answer 3",
-        value: false,
-    },
-    ans4: {
-        answer: "answer 4",
-        value: false,
-    }
+    correct: "option1",
+    ans1: "answer 1",
+    ans2: "answer 2",
+    ans3: "answer 3",
+    ans4: "answer 4",
 }
 
 // array of questions to cycle through
@@ -82,11 +71,22 @@ function question(qNumber) {
 
     // displaying the question and possible answers
     questionDisplay.text(qNumber.question);
-    option1.append(qNumber.ans1.answer);
-    option2.append(qNumber.ans2.answer);
-    option3.append(qNumber.ans3.answer);
-    option4.append(qNumber.ans4.answer);
-}
+    option1.text(qNumber.ans1);
+    option2.text(qNumber.ans2);
+    option3.text(qNumber.ans3);
+    option4.text(qNumber.ans4);
+
+    $(".answer-button").on("click", function() {
+        stop();
+        // the id of the option div is compared to the correct answer listed in the question object
+        if (this.id === qNumber.correct) {
+            console.log("right answer!");
+        } else {
+            console.log("wrong answer!");
+        }
+    });
+};
+
 
 
 // start the game when the button is clicked
