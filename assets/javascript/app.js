@@ -10,7 +10,7 @@ var correctDisplay = $("#correct-answers");
 var incorrectDisplay = $("#incorrect-answers");
 var timedOutDisplay = $("#timed-out-answers");
 
-
+// creating variables for game stats
 var correctAnswers = 0;
 var incorrectAnswers = 0;
 var timedOutAnswers = 0;
@@ -51,49 +51,128 @@ function resetGame() {
     timedOutAnswers = 0;
     qcount = 0;
 
-    runGame(() => console.log("finished running the game"));
+    runGame();
+    // replace console.log with endGame() later on?
 };
 
+// update the score display
+// mostly an intermediate step to make sure game is updating correctly
+function updateScore() {
+    correctDisplay.text(correctAnswers);
+    incorrectDisplay.text(incorrectAnswers);
+    timedOutDisplay.text(timedOutAnswers);
+}
+
 // keeps the game running in between questions
-async function runGame() {
+function runGame() {
     qcount = 0;
 
-    // cycling through the array of questions
-    // for (var i = 0; i < 2; i++) {
-    //     console.log("question #" + (i+1));
-    //     await question(qArray[i]);
+    updateScore();
 
-    //     if (qcount === 2) {
-    //         // endGame;
-    //         console.log("game over!");
-    //     }
+    // cycling through the array of questions
+    // for (var i = 0; i < 1; i++) {
+    //     console.log("question #" + (i+1));
+    //     question(qArray[i]);
     // }
 
-    for (const i of qArray) {
-        console.log("question #" + qcount);
-        await question(i);
+    // if (qcount === 1) {
+    //     stop();
+    //     endGame();
+    //     console.log("max qcount reached");
+    // }
 
-        if (qcount === 2) {
+    qArray.forEach(i => {
+        console.log("question #" + (qcount + 1));
+        question(i);
+
+        if (qcount === qArray.length) {
             // endGame;
             console.log("game over!");
         }
-    }
+    });
 
-    // qArray.forEach(i => {
-    //     var qAnswered = false;
-    //     qcount++;
+    // this function will run every time a new question is asked
+    function question(qNumber) {
+        var timer = 10;
+        timeDisplay.text(timer + "s");
+        // every second, the timer will decrement
+        var intervalId = setInterval(decrement, 1000);
+        function decrement() {
+            timer--;
+            console.log(timer)
+            timeDisplay.text(timer + "s");
+
+            if (timer === 0) {
+                stop();
+                timeDisplay.text("Time's up!");
+                timedOutAnswers++;
+                console.log("timed out answers: " + timedOutAnswers);
+                qcount++;
+                console.log("qcount: " + qcount);
+                updateScore();
+                clearQuestion();
+            }
+        }
+        function stop() {
+            clearInterval(intervalId);
+        }
+
+        // clears the question and answers
+        // really just here as an intermediate step
+        function clearQuestion() {
+            questionDisplay.text("");
+            option1.text("");
+            option2.text("");
+            option3.text("");
+            option4.text("");
+        }
+
+        // displaying the question and possible answers
+        questionDisplay.text(qNumber.question);
+        option1.text(qNumber.ans1);
+        option2.text(qNumber.ans2);
+        option3.text(qNumber.ans3);
+        option4.text(qNumber.ans4);
+
+        // when one of the answers is selected, check to see if the right answer was chosen
+        $(".answer-button").on("click", function() {
+            stop();
+            // the id of the option div is compared to the correct answer listed in the question object
+            if (this.id === qNumber.correct) {
+                console.log("right answer!");
+                correctAnswers++;
+                console.log("correct answers: " + correctAnswers);
+                qcount++;
+                console.log("qcount: " + qcount);
+                updateScore();
+                clearQuestion();
+            } else {
+                console.log("wrong answer!");
+                incorrectAnswers++;
+                console.log("incorrect answers: " + incorrectAnswers);
+                qcount++;
+                console.log("qcount: " + qcount);
+                updateScore();
+                clearQuestion();
+            }
+        });
+    };
+
+    // for (const i of qArray) {
     //     console.log("question #" + qcount);
     //     await question(i);
 
     //     if (qcount === 2) {
     //         // endGame;
-    //         console.log("game over!");
+    //         console.log("all questions asked");
     //     }
-    // });
+    // }
+
+    
 };
 
 function endGame() {
-    console.log("game over!");
+    console.log("endGame()");
     questionDisplay.text("");
     option1.text("");
     option2.text("");
@@ -107,54 +186,54 @@ function endGame() {
 
 
 // this function will run every time a new question is asked
-function question(qNumber) {
-    var timer = 10;
-    timeDisplay.text(timer + "s");
-    // every second, the timer will decrement
-    var intervalId = setInterval(decrement, 1000);
-    function decrement() {
-        timer--;
-        console.log(timer)
-        timeDisplay.text(timer + "s");
+// function question(qNumber) {
+//     var timer = 10;
+//     timeDisplay.text(timer + "s");
+//     // every second, the timer will decrement
+//     var intervalId = setInterval(decrement, 1000);
+//     function decrement() {
+//         timer--;
+//         console.log(timer)
+//         timeDisplay.text(timer + "s");
 
-        if (timer === 0) {
-            stop();
-            timeDisplay.text("Time's up!");
-            timedOutAnswers++;
-            qAnswered = true;
-            // qcount++;
-            // console.log("qcount: " + qcount);
-        }
-    }
-    function stop() {
-        clearInterval(intervalId);
-    }
+//         if (timer === 0) {
+//             stop();
+//             timeDisplay.text("Time's up!");
+//             timedOutAnswers++;
+//             console.log("timed out answers: " + timedOutAnswers);
+//             qcount++;
+//             console.log("qcount: " + qcount);
+//         }
+//     }
+//     function stop() {
+//         clearInterval(intervalId);
+//     }
 
-    // displaying the question and possible answers
-    questionDisplay.text(qNumber.question);
-    option1.text(qNumber.ans1);
-    option2.text(qNumber.ans2);
-    option3.text(qNumber.ans3);
-    option4.text(qNumber.ans4);
+//     // displaying the question and possible answers
+//     questionDisplay.text(qNumber.question);
+//     option1.text(qNumber.ans1);
+//     option2.text(qNumber.ans2);
+//     option3.text(qNumber.ans3);
+//     option4.text(qNumber.ans4);
 
-    $(".answer-button").on("click", function() {
-        stop();
-        // the id of the option div is compared to the correct answer listed in the question object
-        if (this.id === qNumber.correct) {
-            console.log("right answer!");
-            correctAnswers++;
-            qAnswered = true;
-            // qcount++;
-            // console.log("qcount: " + qcount);
-        } else {
-            console.log("wrong answer!");
-            incorrectAnswers++;
-            qAnswered = true;
-            // qcount++;
-            // console.log("qcount: " + qcount);
-        }
-    });
-};
+//     $(".answer-button").on("click", function() {
+//         stop();
+//         // the id of the option div is compared to the correct answer listed in the question object
+//         if (this.id === qNumber.correct) {
+//             console.log("right answer!");
+//             correctAnswers++;
+//             console.log("correct answers: " + correctAnswers);
+//             qcount++;
+//             console.log("qcount: " + qcount);
+//         } else {
+//             console.log("wrong answer!");
+//             incorrectAnswers++;
+//             console.log("incorrect answers: " + incorrectAnswers);
+//             qcount++;
+//             console.log("qcount: " + qcount);
+//         }
+//     });
+// };
 
 
 
