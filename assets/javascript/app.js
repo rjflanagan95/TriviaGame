@@ -4,6 +4,10 @@ var questionDisplay = $("#question");
 var optionsDisplay = $("#options");
 var startBtn = $("#start-game");
 
+var correctAnswers = 0;
+var incorrectAnswers = 0;
+var timedOutAnswers = 0;
+
 var beginGame = false;
 
 
@@ -13,34 +17,51 @@ function resetGame() {
     console.log("game has been reset");
     console.log("===================================");
     // resetting scores
-    var correctGuesses = 0;
-    var incorrectGuesses = 0;
-    var timedOutGuesses = 0;
-    beginGame = true;
+    correctAnswers = 0;
+    incorrectAnswers = 0;
+    timedOutAnswers = 0;
+    // beginGame = true;
+
+    runGame();
+};
+
+function runGame() {
+    question();
 };
 
 
 // this function will run every time a new question is asked
 function question() {
-    console.log("question function is running");
-    var timer = 30;
+    var timer = 10;
+    timeDisplay.text(timer + "s");
     // every second, the timer will decrement
-    var IntervalId = setInterval(decrement, 1000);
+    var intervalId = setInterval(decrement, 1000);
+
     function decrement() {
         timer--;
         console.log(timer)
         timeDisplay.text(timer + "s");
+
+        if (timer === 0) {
+            stop();
+            timeDisplay.text("Time's up!");
+        }
+    }
+    function stop() {
+        clearInterval(intervalId);
     }
 
     questionDisplay.text("first question");
     optionsDisplay.text("here are some options");
 }
 
+
 // start the game when the button is clicked
 $(document).ready(function() {
     startBtn.on("click", resetGame);
 
-    if (beginGame === true) {
-        question();
-    }
+    // if (beginGame === true) {
+    //     console.log("beginGame is true");
+    //     question();
+    // }
 })
