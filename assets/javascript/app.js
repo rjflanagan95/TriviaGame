@@ -6,25 +6,37 @@ var option2 = $("#option2");
 var option3 = $("#option3");
 var option4 = $("#option4");
 var startBtn = $("#start-game");
+var correctDisplay = $("#correct-answers");
+var incorrectDisplay = $("#incorrect-answers");
+var timedOutDisplay = $("#timed-out-answers");
+
 
 var correctAnswers = 0;
 var incorrectAnswers = 0;
 var timedOutAnswers = 0;
+var qcount = 0;
 
-var beginGame = false;
 
 // defining questions as objects
 var q1 = {
     question: "here's the first question",
     correct: "option1",
-    ans1: "answer 1",
-    ans2: "answer 2",
-    ans3: "answer 3",
-    ans4: "answer 4",
+    ans1: "1-1",
+    ans2: "1-2",
+    ans3: "1-3",
+    ans4: "1-4",
+}
+var q2= {
+    question: "here's the second question",
+    correct: "option3",
+    ans1: "2-1",
+    ans2: "2-2",
+    ans3: "2-3",
+    ans4: "2-4",
 }
 
 // array of questions to cycle through
-var qArray = [q1];
+var qArray = [q1, q2];
 
 
 // reset the game, either at the beginning after clicking "start" or after a completed game
@@ -37,16 +49,61 @@ function resetGame() {
     correctAnswers = 0;
     incorrectAnswers = 0;
     timedOutAnswers = 0;
-    // beginGame = true;
+    qcount = 0;
 
-    runGame();
+    runGame(() => console.log("finished running the game"));
 };
 
-function runGame() {
-    for (var i = 0; i < 1; i++) {
-        question(qArray[i])
+// keeps the game running in between questions
+async function runGame() {
+    qcount = 0;
+
+    // cycling through the array of questions
+    // for (var i = 0; i < 2; i++) {
+    //     console.log("question #" + (i+1));
+    //     await question(qArray[i]);
+
+    //     if (qcount === 2) {
+    //         // endGame;
+    //         console.log("game over!");
+    //     }
+    // }
+
+    for (const i of qArray) {
+        console.log("question #" + qcount);
+        await question(i);
+
+        if (qcount === 2) {
+            // endGame;
+            console.log("game over!");
+        }
     }
+
+    // qArray.forEach(i => {
+    //     var qAnswered = false;
+    //     qcount++;
+    //     console.log("question #" + qcount);
+    //     await question(i);
+
+    //     if (qcount === 2) {
+    //         // endGame;
+    //         console.log("game over!");
+    //     }
+    // });
 };
+
+function endGame() {
+    console.log("game over!");
+    questionDisplay.text("");
+    option1.text("");
+    option2.text("");
+    option3.text("");
+    option4.text("");
+
+    correctDisplay.text(correctAnswers);
+    incorrectDisplay.text(incorrectAnswers);
+    timedOutDisplay.text(timedOutAnswers);
+}
 
 
 // this function will run every time a new question is asked
@@ -63,6 +120,10 @@ function question(qNumber) {
         if (timer === 0) {
             stop();
             timeDisplay.text("Time's up!");
+            timedOutAnswers++;
+            qAnswered = true;
+            // qcount++;
+            // console.log("qcount: " + qcount);
         }
     }
     function stop() {
@@ -81,8 +142,16 @@ function question(qNumber) {
         // the id of the option div is compared to the correct answer listed in the question object
         if (this.id === qNumber.correct) {
             console.log("right answer!");
+            correctAnswers++;
+            qAnswered = true;
+            // qcount++;
+            // console.log("qcount: " + qcount);
         } else {
             console.log("wrong answer!");
+            incorrectAnswers++;
+            qAnswered = true;
+            // qcount++;
+            // console.log("qcount: " + qcount);
         }
     });
 };
