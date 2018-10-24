@@ -36,7 +36,7 @@ var q2= {
 }
 
 // array of questions to cycle through
-var qArray = [q1, q2];
+var qArray = [q1];
 
 
 // reset the game, either at the beginning after clicking "start" or after a completed game
@@ -46,13 +46,13 @@ function resetGame() {
     console.log("game has been reset");
     console.log("===================================");
     // resetting scores
+    qcount = 0;
     correctAnswers = 0;
     incorrectAnswers = 0;
     timedOutAnswers = 0;
-    qcount = 0;
+    updateScore();
 
     runGame();
-    // replace console.log with endGame() later on?
 };
 
 // update the score display
@@ -66,33 +66,24 @@ function updateScore() {
 // keeps the game running in between questions
 function runGame() {
     qcount = 0;
+    correctAnswers = 0;
+    incorrectAnswers = 0;
+    timedOutAnswers = 0;
 
     updateScore();
 
     // cycling through the array of questions
-    // for (var i = 0; i < 1; i++) {
-    //     console.log("question #" + (i+1));
-    //     question(qArray[i]);
-    // }
-
-    // if (qcount === 1) {
-    //     stop();
-    //     endGame();
-    //     console.log("max qcount reached");
-    // }
-
-    qArray.forEach(i => {
-        console.log("question #" + (qcount + 1));
-        question(i);
-
-        if (qcount === qArray.length) {
-            // endGame;
-            console.log("game over!");
-        }
-    });
+    for (var i = 0; i < qArray.length; i++) {
+        question(qArray[i]);
+    }
 
     // this function will run every time a new question is asked
     function question(qNumber) {
+        console.log("~~~~~~~~~~~~~");
+        console.log("new question");
+        console.log("~~~~~~~~~~~~~");
+        qcount++;
+        console.log("question #" + qcount);
         var timer = 10;
         timeDisplay.text(timer + "s");
         // every second, the timer will decrement
@@ -107,10 +98,13 @@ function runGame() {
                 timeDisplay.text("Time's up!");
                 timedOutAnswers++;
                 console.log("timed out answers: " + timedOutAnswers);
-                qcount++;
                 console.log("qcount: " + qcount);
                 updateScore();
                 clearQuestion();
+                if (qcount === qArray.length) {
+                    stop();
+                    endGame();
+                }
             }
         }
         function stop() {
@@ -142,99 +136,43 @@ function runGame() {
                 console.log("right answer!");
                 correctAnswers++;
                 console.log("correct answers: " + correctAnswers);
-                qcount++;
                 console.log("qcount: " + qcount);
                 updateScore();
                 clearQuestion();
+                if (qcount === qArray.length) {
+                    stop();
+                    endGame();
+                }
             } else {
                 console.log("wrong answer!");
                 incorrectAnswers++;
                 console.log("incorrect answers: " + incorrectAnswers);
-                qcount++;
                 console.log("qcount: " + qcount);
                 updateScore();
                 clearQuestion();
+                if (qcount === qArray.length) {
+                    stop();
+                    endGame();
+                }
             }
         });
-    };
+    }; 
 
-    // for (const i of qArray) {
-    //     console.log("question #" + qcount);
-    //     await question(i);
-
-    //     if (qcount === 2) {
-    //         // endGame;
-    //         console.log("all questions asked");
-    //     }
-    // }
-
+    function endGame() {
+        startBtn.text("Click to play again");
+        questionDisplay.text("");
+        option1.text("");
+        option2.text("");
+        option3.text("");
+        option4.text("");
+        timeDisplay.text("");
     
+        correctDisplay.text("Correct: " + correctAnswers);
+        incorrectDisplay.text("Incorrect: " + incorrectAnswers);
+        timedOutDisplay.text("Unanswered: " + timedOutAnswers);
+    };
+   
 };
-
-function endGame() {
-    console.log("endGame()");
-    questionDisplay.text("");
-    option1.text("");
-    option2.text("");
-    option3.text("");
-    option4.text("");
-
-    correctDisplay.text(correctAnswers);
-    incorrectDisplay.text(incorrectAnswers);
-    timedOutDisplay.text(timedOutAnswers);
-}
-
-
-// this function will run every time a new question is asked
-// function question(qNumber) {
-//     var timer = 10;
-//     timeDisplay.text(timer + "s");
-//     // every second, the timer will decrement
-//     var intervalId = setInterval(decrement, 1000);
-//     function decrement() {
-//         timer--;
-//         console.log(timer)
-//         timeDisplay.text(timer + "s");
-
-//         if (timer === 0) {
-//             stop();
-//             timeDisplay.text("Time's up!");
-//             timedOutAnswers++;
-//             console.log("timed out answers: " + timedOutAnswers);
-//             qcount++;
-//             console.log("qcount: " + qcount);
-//         }
-//     }
-//     function stop() {
-//         clearInterval(intervalId);
-//     }
-
-//     // displaying the question and possible answers
-//     questionDisplay.text(qNumber.question);
-//     option1.text(qNumber.ans1);
-//     option2.text(qNumber.ans2);
-//     option3.text(qNumber.ans3);
-//     option4.text(qNumber.ans4);
-
-//     $(".answer-button").on("click", function() {
-//         stop();
-//         // the id of the option div is compared to the correct answer listed in the question object
-//         if (this.id === qNumber.correct) {
-//             console.log("right answer!");
-//             correctAnswers++;
-//             console.log("correct answers: " + correctAnswers);
-//             qcount++;
-//             console.log("qcount: " + qcount);
-//         } else {
-//             console.log("wrong answer!");
-//             incorrectAnswers++;
-//             console.log("incorrect answers: " + incorrectAnswers);
-//             qcount++;
-//             console.log("qcount: " + qcount);
-//         }
-//     });
-// };
-
 
 
 // start the game when the button is clicked
