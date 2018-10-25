@@ -58,9 +58,9 @@ function resetGame() {
 // update the score display
 // mostly an intermediate step to make sure game is updating correctly
 function updateScore() {
-    correctDisplay.text(correctAnswers);
-    incorrectDisplay.text(incorrectAnswers);
-    timedOutDisplay.text(timedOutAnswers);
+    correctDisplay.text("Correct: " + correctAnswers);
+    incorrectDisplay.text("Incorrect: " + incorrectAnswers);
+    timedOutDisplay.text("Unanswered: " + timedOutAnswers);
 }
 
 // keeps the game running in between questions
@@ -74,30 +74,39 @@ function runGame() {
 
     // cycling through the array of questions
     for (var i = 0; i < qArray.length; i++) {
-        question(qArray[i]);
+        if (i === qcount) {
+            console.log("var i = " + i);
+            console.log("qcount: " + qcount);
+            question(qArray[i]);
+        }
+        if (qcount === qArray.length) {
+        stop();
+        endGame();
+        }
     }
+    
 
     // this function will run every time a new question is asked
     function question(qNumber) {
-        console.log("~~~~~~~~~~~~~");
-        console.log("new question");
-        console.log("~~~~~~~~~~~~~");
-        qcount++;
-        console.log("question #" + qcount);
+        console.log("~~~~~~~new question~~~~~~~");
+        // qcount++;
+        console.log("question #" + (qcount+1));
         var timer = 10;
         timeDisplay.text(timer + "s");
         // every second, the timer will decrement
         var intervalId = setInterval(decrement, 1000);
         function decrement() {
             timer--;
-            console.log(timer)
             timeDisplay.text(timer + "s");
 
             if (timer === 0) {
+                qcount++;
                 stop();
                 timeDisplay.text("Time's up!");
                 timedOutAnswers++;
-                console.log("timed out answers: " + timedOutAnswers);
+                console.log("Correct answers: " + correctAnswers);
+                console.log("Incorrect answers: " + incorrectAnswers);
+                console.log("Timed out answers: " + timedOutAnswers);
                 console.log("qcount: " + qcount);
                 updateScore();
                 clearQuestion();
@@ -130,12 +139,16 @@ function runGame() {
 
         // when one of the answers is selected, check to see if the right answer was chosen
         $(".answer-button").on("click", function() {
-            stop();
+
             // the id of the option div is compared to the correct answer listed in the question object
             if (this.id === qNumber.correct) {
-                console.log("right answer!");
+                qcount++;
+                stop();
+                timeDisplay.text("That's right!");
                 correctAnswers++;
-                console.log("correct answers: " + correctAnswers);
+                console.log("Correct answers: " + correctAnswers);
+                console.log("Incorrect answers: " + incorrectAnswers);
+                console.log("Timed out answers: " + timedOutAnswers);
                 console.log("qcount: " + qcount);
                 updateScore();
                 clearQuestion();
@@ -144,9 +157,13 @@ function runGame() {
                     endGame();
                 }
             } else {
-                console.log("wrong answer!");
+                qcount++;
+                stop();
+                timeDisplay.text("That's wrong!");
                 incorrectAnswers++;
-                console.log("incorrect answers: " + incorrectAnswers);
+                console.log("Correct answers: " + correctAnswers);
+                console.log("Incorrect answers: " + incorrectAnswers);
+                console.log("Timed out answers: " + timedOutAnswers);
                 console.log("qcount: " + qcount);
                 updateScore();
                 clearQuestion();
@@ -167,15 +184,12 @@ function runGame() {
         option4.text("");
         timeDisplay.text("");
     
-        correctDisplay.text("Correct: " + correctAnswers);
-        incorrectDisplay.text("Incorrect: " + incorrectAnswers);
-        timedOutDisplay.text("Unanswered: " + timedOutAnswers);
+        updateScore();
     };
-   
 };
 
 
 // start the game when the button is clicked
 $(document).ready(function() {
     startBtn.on("click", resetGame);
-})
+});
