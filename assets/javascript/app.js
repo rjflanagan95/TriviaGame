@@ -26,7 +26,7 @@ var q1 = {
     ans3: "1-3",
     ans4: "1-4",
 }
-var q2= {
+var q2 = {
     question: "here's the second question",
     correct: "option3",
     ans1: "2-1",
@@ -36,7 +36,7 @@ var q2= {
 }
 
 // array of questions to cycle through
-var qArray = [q1];
+var qArray = [q1, q2];
 
 
 // reset the game, either at the beginning after clicking "start" or after a completed game
@@ -74,23 +74,18 @@ function runGame() {
 
     // cycling through the array of questions
     for (var i = 0; i < qArray.length; i++) {
-        if (i === qcount) {
-            console.log("var i = " + i);
-            console.log("qcount: " + qcount);
-            question(qArray[i]);
-        }
-        if (qcount === qArray.length) {
-        stop();
-        endGame();
-        }
+        console.log("var i = " + i);
+        console.log("qcount: " + qcount);
+        question(qArray[i]);
     }
     
 
     // this function will run every time a new question is asked
     function question(qNumber) {
         console.log("~~~~~~~new question~~~~~~~");
-        // qcount++;
         console.log("question #" + (qcount+1));
+
+        // timer currently set for 10 seconds, will change to 30 seconds for the final game
         var timer = 10;
         timeDisplay.text(timer + "s");
         // every second, the timer will decrement
@@ -99,7 +94,9 @@ function runGame() {
             timer--;
             timeDisplay.text(timer + "s");
 
+            // if time is up, log the answer as "timed out"
             if (timer === 0) {
+                // increment qcount to keep track of the number of questions answered
                 qcount++;
                 stop();
                 timeDisplay.text("Time's up!");
@@ -110,6 +107,7 @@ function runGame() {
                 console.log("qcount: " + qcount);
                 updateScore();
                 clearQuestion();
+                // check if all the questions have been asked
                 if (qcount === qArray.length) {
                     stop();
                     endGame();
@@ -174,22 +172,21 @@ function runGame() {
             }
         });
     }; 
+};
+function endGame() {
+    startBtn.text("Click to play again!");
+    questionDisplay.text("");
+    option1.text("");
+    option2.text("");
+    option3.text("");
+    option4.text("");
+    timeDisplay.text("");
 
-    function endGame() {
-        startBtn.text("Click to play again");
-        questionDisplay.text("");
-        option1.text("");
-        option2.text("");
-        option3.text("");
-        option4.text("");
-        timeDisplay.text("");
-    
-        updateScore();
-    };
+    updateScore();
 };
 
 
+
 // start the game when the button is clicked
-$(document).ready(function() {
-    startBtn.on("click", resetGame);
-});
+
+startBtn.on("click", resetGame);
