@@ -21,7 +21,7 @@ var qcount = 0;
 var q1 = {
     question: "here's the first question",
     correct: "option1",
-    ans1: "1-1",
+    ans1: "1-1 (correct)",
     ans2: "1-2",
     ans3: "1-3",
     ans4: "1-4",
@@ -31,7 +31,7 @@ var q2 = {
     correct: "option3",
     ans1: "2-1",
     ans2: "2-2",
-    ans3: "2-3",
+    ans3: "2-3 (correct)",
     ans4: "2-4",
 }
 
@@ -42,10 +42,12 @@ var qArray = [q1, q2];
 // reset the game, either at the beginning after clicking "start" or after a completed game
 function resetGame() {
     startBtn.text("");
+    startBtn.hide();
     console.log("===================================");
     console.log("game has been reset");
     console.log("===================================");
     // resetting scores
+    $(".score-area").show();
     qcount = 0;
     correctAnswers = 0;
     incorrectAnswers = 0;
@@ -174,6 +176,7 @@ function runGame() {
     }; 
 };
 function endGame() {
+    startBtn.show();
     startBtn.text("Click to play again!");
     questionDisplay.text("");
     option1.text("");
@@ -188,5 +191,5 @@ function endGame() {
 
 
 // start the game when the button is clicked
-
+$(".score-area").hide();
 startBtn.on("click", resetGame);

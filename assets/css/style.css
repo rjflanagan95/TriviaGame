@@ -1,6 +1,6 @@
 body {
     text-align: center;
-    background-color: #666;
+    background-color: #46ccdb;
     color: #eee;
     font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
 }
@@ -18,7 +18,7 @@ body {
 }
 
 #header {
-    background-color: #60db9b;
+    background-color: #08a1b2;
     color: #eee;
     font-size: 36px;
     font-weight: bold;
@@ -35,6 +35,8 @@ body {
     color: #08a1b2;
     font-size: 28px;
     font-weight: bold;
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 
 .answer-button {
@@ -56,17 +58,23 @@ body {
     margin-left: 45%;
     margin-right: 45%;
     margin-top: 5px;
-    margin-bottom: 20px;
+    margin-bottom: 80px;
 }
 
 #start-game {
-    color: #08a1b2;
+    background-color: #08a1b2;
+    color: #eee;
     font-size: 18px;
     font-weight: bold;
     position: relative;
     margin-bottom: 40px;
     margin-left: 35%;
     margin-right: 35%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    border-radius: 25px;
+    
 }
 
 .score-area {
@@ -83,6 +91,6 @@ body {
 
     border-radius: 25px;
     background: #60db9b;
-    /* padding-top: 10px;
-    padding-bottom: 10px; */
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
