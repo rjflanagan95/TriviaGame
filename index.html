@@ -6,7 +6,7 @@
   <title>Trivia Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="assets/css/reset.css">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
 
   <!-- Added link to the jQuery Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -16,21 +16,26 @@
 </head>
 
 <body>
+  <div id="header">
     <h1>Trivia Game</h1>
-
+  </div>
+  <div id="game-area">
     <div id="start-game">Start Game</div>
     <div id="time-remaining"></div>
     <div id="question"></div>
-    <div class="answer-button" id="option1"></div>
-    <div class="answer-button" id="option2"></div>
-    <div class="answer-button" id="option3"></div>
-    <div class="answer-button" id="option4"></div>
+    <div class="button answer-button" id="option1"></div>
+    <div class="button answer-button" id="option2"></div>
+    <div class="button answer-button" id="option3"></div>
+    <div class="button answer-button" id="option4"></div>
 
-    <div id="correct-answers"></div>
-    <div id="incorrect-answers"></div>
-    <div id="timed-out-answers"></div>
+    <div class="score-area">
+      <div id="correct-answers"></div>
+      <div id="incorrect-answers"></div>
+      <div id="timed-out-answers"></div>
+    </div>
+    
+  </div>
 
-
-    <script src="assets/javascript/app.js"></script>
+  <script src="assets/javascript/app.js"></script>
 </body>
 </html>

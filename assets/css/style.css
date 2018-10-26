@@ -1,0 +1,88 @@
+body {
+    text-align: center;
+    background-color: #666;
+    color: #eee;
+    font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+#game-area {
+    background-color: #eee;
+    color: #666;
+    
+    position: relative;
+    margin-left: 25%;
+    margin-right: 25%;
+    /* height: 500px; */
+    padding-top: 150px;
+    padding-bottom: 200px;
+}
+
+#header {
+    background-color: #60db9b;
+    color: #eee;
+    font-size: 36px;
+    font-weight: bold;
+    padding-top: 25px;
+    padding-bottom: 15px;
+
+    position: relative;
+    margin-left: 25%;
+    margin-right: 25%;
+    height: 50px;
+}
+
+#question {
+    color: #08a1b2;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.answer-button {
+    color: #46ccdb;
+    font-size: 22px;
+    font-weight: bold;
+    position: relative;
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-top: 5px;
+}
+
+#time-remaining {
+    color: #08a1b2;
+    font-size: 22px;
+    font-weight: bold;
+
+    position: relative;
+    margin-left: 45%;
+    margin-right: 45%;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+#start-game {
+    color: #08a1b2;
+    font-size: 18px;
+    font-weight: bold;
+    position: relative;
+    margin-bottom: 40px;
+    margin-left: 35%;
+    margin-right: 35%;
+}
+
+.score-area {
+    position: relative;
+    margin-bottom: 5px;
+    margin-top: 20px;
+    margin-left: 35%;
+    margin-right: 35%;
+
+    background-color: #60db9b;
+    color: #eee;
+    font-size: 22px;
+    font-weight: bold;
+
+    border-radius: 25px;
+    background: #60db9b;
+    /* padding-top: 10px;
+    padding-bottom: 10px; */
+}
