@@ -108,12 +108,15 @@ function runGame() {
                 console.log("Timed out answers: " + timedOutAnswers);
                 console.log("qcount: " + qcount);
                 updateScore();
-                clearQuestion();
-                // check if all the questions have been asked
-                if (qcount === qArray.length) {
-                    stop();
-                    endGame();
-                }
+                var qTimeout = setTimeout(function() {
+                    clearQuestion();
+                    // check if all the questions have been asked
+                    if (qcount === qArray.length) {
+                        stop();
+                        endGame();
+                    }
+                }, 5000);
+                
             }
         }
         function stop() {
@@ -151,11 +154,14 @@ function runGame() {
                 console.log("Timed out answers: " + timedOutAnswers);
                 console.log("qcount: " + qcount);
                 updateScore();
-                clearQuestion();
-                if (qcount === qArray.length) {
-                    stop();
-                    endGame();
-                }
+                var qTimeout = setTimeout(function() {
+                    clearQuestion();
+                    // check if all the questions have been asked
+                    if (qcount >= qArray.length) {
+                        stop();
+                        endGame();
+                    }
+                }, 5000);
             } else {
                 qcount++;
                 stop();
@@ -166,11 +172,14 @@ function runGame() {
                 console.log("Timed out answers: " + timedOutAnswers);
                 console.log("qcount: " + qcount);
                 updateScore();
-                clearQuestion();
-                if (qcount === qArray.length) {
-                    stop();
-                    endGame();
-                }
+                var qTimeout = setTimeout(function() {
+                    clearQuestion();
+                    // check if all the questions have been asked
+                    if (qcount >= qArray.length) {
+                        stop();
+                        endGame();
+                    }
+                }, 5000);
             }
         });
     }; 
