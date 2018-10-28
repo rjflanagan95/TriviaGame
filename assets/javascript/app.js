@@ -69,6 +69,7 @@ function resetGame() {
     console.log("==================================================");
     // resetting scores
     $(".score-area").show();
+    timeDisplay.text("");
     timeDisplay.show();
     qcount = 0;
     correctAnswers = 0;
@@ -77,12 +78,6 @@ function resetGame() {
     clearInterval(intervalId);
     updateScore();
 
-    runGame();
-}
-
-// keeps the game running in between questions
-function runGame() {
-    updateScore();
     nextQuestion();
 }
 
@@ -91,8 +86,7 @@ $(".score-area").hide();
 startBtn.click(resetGame);
 
 function displayQuestion() {
-    console.log("~~~~~~~new question~~~~~~~");
-    console.log("question #" + (qcount+1));
+    console.log("~~~~~~~question #" + (qcount+1) + "~~~~~~~");
 
     // displaying the question and possible answers
     questionDisplay.text(qArray[qcount].question);
@@ -108,7 +102,6 @@ function displayQuestion() {
 
     function stopTimer() {
         clearInterval(intervalId);
-        // clearTimeout(transitionInterval);
     }
 
     function decrement() {
@@ -129,13 +122,14 @@ function displayQuestion() {
             updateScore();
             clearQuestion();
             clearTimeout(transitionInterval);
+            // wait 3 seconds so the user can read the result, then ask the next question
             transitionInterval = setTimeout(nextQuestion, 3000);
             stopTimer();
         }
-        // when one of the answers is selected, check to see if the right answer was chosen
-        $(".answer-button").click(checkAnswer);
     }
     
+    // when one of the answers is selected, check to see if the right answer was chosen
+    $(".answer-button").click(checkAnswer);
     function checkAnswer() {
         if (qcount < qArray.length) {
             // the id of the option div is compared to the correct answer listed in the question object
@@ -150,6 +144,7 @@ function displayQuestion() {
                 updateScore();
                 clearQuestion();
                 clearTimeout(transitionInterval);
+                // wait 3 seconds so the user can read the result, then ask the next question
                 transitionInterval = setTimeout(nextQuestion, 3000);
                 stopTimer();
             } else {
@@ -163,12 +158,12 @@ function displayQuestion() {
                 updateScore();
                 clearQuestion();
                 clearTimeout(transitionInterval);
+                // wait 3 seconds so the user can read the result, then ask the next question
                 transitionInterval = setTimeout(nextQuestion, 3000);
                 stopTimer();
             }
         }
     }
-
 }
 
 // clears the question and answers
@@ -184,13 +179,12 @@ function nextQuestion() {
     updateScore();
     // if all the questions have been asked, end the game
     if (qcount === qArray.length) {
-        console.log("qcount === qArray.length");
         endGame();
     } else if (qcount < qArray.length) {
         // display the next question
+        // the reason this is not a generic `else` statement is that i was encountering a bug where qcount would sometimes go above qArray.length and then keep increasing indefinitely
+        // so this prevents the `displayQuestion()` function from running if the bug persists
         displayQuestion();
-        // clearInterval(displayInterval);
-        // displayInterval = setTimeout(displayQuestion, 500);
     }
 }
 
