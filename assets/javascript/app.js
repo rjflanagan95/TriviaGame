@@ -20,41 +20,41 @@ var qcount = 0;
 var intervalId;
 var transitionInterval;
 var displayInterval;
-// timer currently set for 6 seconds, will change to 30 seconds for the final game
-var timer = 6;
+
+var timer = 30;
 
 // defining questions as objects
 var q1 = {
-    question: "here's the first question",
+    question: "Which of these was the first rock-and-roll song to hit #1 on the charts?",
     correct: "option1",
-    ans1: "1-1 (correct)",
-    ans2: "1-2",
-    ans3: "1-3",
-    ans4: "1-4",
+    ans1: "Rock Around the Clock",
+    ans2: "Tutti-Frutti",
+    ans3: "Heartbreak Hotel",
+    ans4: "That's All Right",
 }
 var q2 = {
-    question: "here's the second question",
+    question: "Who is singing on Pink Floyd's 'Great Gig in the Sky'?",
     correct: "option4",
-    ans1: "2-1",
-    ans2: "2-2",
-    ans3: "2-3",
-    ans4: "2-4 (correct)",
+    ans1: "Vicki Brown",
+    ans2: "Roger Waters",
+    ans3: "Janis Joplin",
+    ans4: "Clare Torry",
 }
 var q3 = {
-    question: "here's the third question",
+    question: "Who received the first gold record?",
     correct: "option2",
-    ans1: "3-1",
-    ans2: "3-2 (correct)",
-    ans3: "3-3",
-    ans4: "3-4",
+    ans1: "Elvis Presley",
+    ans2: "Perry Como",
+    ans3: "The Beatles",
+    ans4: "Frank Sinatra",
 }
 var q4 = {
-    question: "here's the fourth question",
+    question: "Which artist holds the world record for most words in a hit single?",
     correct: "option3",
-    ans1: "4-1",
-    ans2: "4-2",
-    ans3: "4-3 (correct)",
-    ans4: "4-4",
+    ans1: "50 Cent",
+    ans2: "Kanye West",
+    ans3: "Eminem",
+    ans4: "Busta Rhymes",
 }
 
 // array of questions to cycle through
@@ -64,9 +64,7 @@ var qArray = [q1, q2, q3, q4];
 function resetGame() {
     startBtn.text("");
     startBtn.hide();
-    console.log("==================================================");
-    console.log("game has been reset");
-    console.log("==================================================");
+
     // resetting scores
     $(".score-area").show();
     timeDisplay.text("");
@@ -86,7 +84,6 @@ $(".score-area").hide();
 startBtn.click(resetGame);
 
 function displayQuestion() {
-    console.log("~~~~~~~question #" + (qcount+1) + "~~~~~~~");
 
     // displaying the question and possible answers
     questionDisplay.text(qArray[qcount].question);
@@ -100,10 +97,6 @@ function displayQuestion() {
     // every second, the timer will decrement
     intervalId = setInterval(decrement, 1000);
 
-    function stopTimer() {
-        clearInterval(intervalId);
-    }
-
     function decrement() {
         localTimer--;
         timeDisplay.text(localTimer + "s");
@@ -115,10 +108,6 @@ function displayQuestion() {
             qcount++;
             timeDisplay.text("Time's up!");
             timedOutAnswers++;
-            console.log("Correct answers: " + correctAnswers);
-            console.log("Incorrect answers: " + incorrectAnswers);
-            console.log("Timed out answers: " + timedOutAnswers);
-            console.log("qcount: " + qcount);
             updateScore();
             clearQuestion();
             clearTimeout(transitionInterval);
@@ -127,41 +116,38 @@ function displayQuestion() {
             stopTimer();
         }
     }
-    
-    // when one of the answers is selected, check to see if the right answer was chosen
-    $(".answer-button").click(checkAnswer);
-    function checkAnswer() {
-        if (qcount < qArray.length) {
-            // the id of the option div is compared to the correct answer listed in the question object
-            if (this.id === qArray[qcount].correct) {
-                qcount++;
-                timeDisplay.text("That's right!");
-                correctAnswers++;
-                console.log("Correct answers: " + correctAnswers);
-                console.log("Incorrect answers: " + incorrectAnswers);
-                console.log("Timed out answers: " + timedOutAnswers);
-                console.log("qcount: " + qcount);
-                updateScore();
-                clearQuestion();
-                clearTimeout(transitionInterval);
-                // wait 3 seconds so the user can read the result, then ask the next question
-                transitionInterval = setTimeout(nextQuestion, 3000);
-                stopTimer();
-            } else {
-                qcount++;
-                timeDisplay.text("That's wrong!");
-                incorrectAnswers++;
-                console.log("Correct answers: " + correctAnswers);
-                console.log("Incorrect answers: " + incorrectAnswers);
-                console.log("Timed out answers: " + timedOutAnswers);
-                console.log("qcount: " + qcount);
-                updateScore();
-                clearQuestion();
-                clearTimeout(transitionInterval);
-                // wait 3 seconds so the user can read the result, then ask the next question
-                transitionInterval = setTimeout(nextQuestion, 3000);
-                stopTimer();
-            }
+
+}
+
+function stopTimer() {
+    clearInterval(intervalId);
+}
+
+// when one of the answers is selected, check to see if the right answer was chosen
+$(".answer-button").click(checkAnswer);
+function checkAnswer() {
+    if (qcount < qArray.length) {
+        // the id of the option div is compared to the correct answer listed in the question object
+        if (this.id === qArray[qcount].correct) {
+            qcount++;
+            timeDisplay.text("That's right!");
+            correctAnswers++;
+            updateScore();
+            clearQuestion();
+            clearTimeout(transitionInterval);
+            // wait 3 seconds so the user can read the result, then ask the next question
+            transitionInterval = setTimeout(nextQuestion, 3000);
+            stopTimer();
+        } else {
+            qcount++;
+            timeDisplay.text("That's wrong!");
+            incorrectAnswers++;
+            updateScore();
+            clearQuestion();
+            clearTimeout(transitionInterval);
+            // wait 3 seconds so the user can read the result, then ask the next question
+            transitionInterval = setTimeout(nextQuestion, 3000);
+            stopTimer();
         }
     }
 }
@@ -196,9 +182,6 @@ function updateScore() {
 }
 
 function endGame() {
-    console.log("==================================================");
-    console.log("game has ended");
-    console.log("==================================================");
     startBtn.show();
     startBtn.text("Click to play again!");
     questionDisplay.text("");
